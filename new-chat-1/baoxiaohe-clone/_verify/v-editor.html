@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>包小盒同款 · 包装设计平台功能模板</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='6' width='24' height='20' rx='3' fill='%23FF6A00'/%3E%3Cpath d='M4 14h24' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M16 14v-6' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+/* ===== 设计令牌 ===== */
+:root{
+  --bg:#F5F6F8;
+  --panel:#FFFFFF;
+  --ink:#1C1F26;
+  --ink-2:#3A3F4B;
+  --muted:#8A8F99;
+  --line:#ECEDEF;
+  --accent:#FF6A00;
+  --accent-deep:#E45E00;
+  --accent-soft:#FFF3EA;
+  --green:#0FA968;
+  --blue:#2F7BF6;
+  --radius:10px;
+  --shadow:0 1px 2px rgba(20,24,35,.05),0 4px 14px rgba(20,24,35,.06);
+  --sidebar-w:216px;
+  --topbar-h:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{display:block;max-width:100%}
+input,select{font-family:inherit;font-size:14px;color:var(--ink)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#D4D7DD;border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ===== 布局外壳 ===== */
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);background:var(--panel);border-right:1px solid var(--line);
+  position:fixed;inset:0 auto 0 0;z-index:50;display:flex;flex-direction:column;
+  transition:transform .22s ease;
+}
+.main{flex:1;margin-left:var(--sidebar-w);min-width:0;display:flex;flex-direction:column}
+.topbar{
+  height:var(--topbar-h);background:var(--panel);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;padding:0 18px;
+}
+.content{flex:1;padding:20px;overflow-x:hidden}
+.content .wrap{max-width:1280px;margin:0 auto}
+
+/* ===== 顶栏 ===== */
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:17px;white-space:nowrap}
+.logo svg{width:26px;height:26px;flex:none}
+.logo .cn{color:var(--ink)}
+.logo .dot{color:var(--accent)}
+.searchbox{flex:1;max-width:520px;position:relative}
+.searchbox svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.searchbox input{
+  width:100%;height:36px;border:1px solid var(--line);border-radius:18px;background:var(--bg);
+  padding:0 34px 0 34px;outline:none;transition:border-color .15s;
+}
+.searchbox input:focus{border-color:var(--accent);background:#fff}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:4px}
+.ta-btn{padding:7px 10px;border-radius:8px;color:var(--ink-2);font-size:13px;white-space:nowrap;transition:background .15s}
+.ta-btn:hover{background:var(--bg)}
+.ta-btn.on{color:var(--accent);background:var(--accent-soft)}
+.top-cta{display:flex;align-items:center;gap:8px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:36px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:600;
+  transition:filter .15s,background .15s;white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-deep)}
+.btn-ghost{background:#fff;color:var(--ink-2);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn svg{width:15px;height:15px}
+.menu-btn{display:none;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;color:var(--ink-2)}
+.menu-btn:hover{background:var(--bg)}
+
+/* ===== 侧边栏 ===== */
+.brand{display:flex;align-items:center;gap:9px;padding:16px 18px 12px;font-weight:700;font-size:18px}
+.brand svg{width:28px;height:28px}
+.nav{flex:1;overflow-y:auto;padding:4px 10px 14px}
+.nav-group{margin-top:14px}
+.nav-group-title{font-size:12px;color:var(--muted);padding:0 10px;margin-bottom:6px;font-weight:500}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;
+  color:var(--ink-2);font-size:14px;cursor:pointer;transition:background .15s,color .15s;
+}
+.nav-item svg{width:17px;height:17px;flex:none;color:var(--muted);transition:color .15s}
+.nav-item:hover{background:var(--bg)}
+.nav-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-item.active svg{color:var(--accent)}
+.nav-item.sub{padding-left:26px;font-size:13px}
+.nav-foot{padding:12px 18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.7}
+.sidebar-mask{position:fixed;inset:0;background:rgba(15,18,28,.45);z-index:45;display:none}
+
+/* ===== 视图通用 ===== */
+.view{display:none;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.page-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+.page-head h1{font-size:20px;font-weight:700}
+.page-head p{color:var(--muted);font-size:13px;margin-top:3px}
+.page-head .actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.filter-bar{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 14px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px;
+}
+.f-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.f-label{font-size:13px;color:var(--muted);flex:none}
+.chip{
+  padding:5px 12px;border-radius:16px;font-size:13px;color:var(--ink-2);background:#fff;
+  border:1px solid var(--line);cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.chip.soft{background:var(--bg);border-color:transparent}
+.chip.soft.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.seg{display:inline-flex;background:var(--bg);border-radius:8px;padding:3px}
+.seg button{padding:6px 14px;border-radius:6px;font-size:13px;color:var(--ink-2);transition:all .15s}
+.seg button.on{background:#fff;color:var(--accent);font-weight:600;box-shadow:0 1px 3px rgba(20,24,35,.12)}
+.f-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.count-hint{font-size:12px;color:var(--muted)}
+select.sel{
+  height:32px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:0 8px;outline:none;color:var(--ink-2);
+}
+
+/* ===== 卡片网格 ===== */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;
+}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card .thumb{position:relative;background:#FBFBFC;aspect-ratio:1/1;overflow:hidden}
+.card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.card:hover .thumb img{transform:scale(1.05)}
+.card .badges{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;z-index:2}
+.card .badge{
+  font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;
+  background:rgba(255,255,255,.92);color:var(--ink-2);box-shadow:0 1px 3px rgba(20,24,35,.15);
+}
+.badge.printable{color:#fff;background:var(--green)}
+.badge.custom{color:#fff;background:var(--blue)}
+.badge.dim{color:#fff;background:var(--accent)}
+.card .body{padding:10px 12px 12px}
+.card .name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px}
+.card .meta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;flex-wrap:wrap;gap:4px 8px}
+.card .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag{font-size:11px;color:var(--muted);background:var(--bg);padding:2px 8px;border-radius:5px}
+.card .ops{display:flex;gap:8px;margin-top:10px}
+.card .ops .btn{height:30px;padding:0 12px;font-size:12px;flex:1}
+.card .ops .btn.mini{flex:none;width:30px;padding:0}
+.card.dim2d .thumb img{filter:grayscale(1) contrast(1.05)}
+.card.dim2d .thumb::after{
+  content:"";position:absolute;inset:0;border:2px dashed rgba(31,41,55,.35);border-radius:4px;margin:6px;
+}
+
+/* 场景卡 */
+.scene-card .thumb{aspect-ratio:4/3}
+.scene-card .cover{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(15,18,28,.55));}
+.scene-card .cat-tag{position:absolute;left:8px;top:8px}
+.scene-card .use-line{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* ===== 首页 ===== */
+.hero{
+  background:linear-gradient(120deg,#FFF7F0,#FFF0E2 55%,#FFE7D2);
+  border:1px solid #FFE2CC;border-radius:14px;padding:26px 30px;margin-bottom:18px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.hero h1{font-size:26px;font-weight:800;letter-spacing:.5px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:#7A6452;margin-top:6px;font-size:14px}
+.hero .actions{display:flex;gap:10px;margin-top:16px}
+.hero .actions .btn{height:42px;padding:0 22px;font-size:15px}
+.section{margin-bottom:22px}
+.section-head{display:flex;align-items:center;margin-bottom:12px}
+.section-head h2{font-size:17px;font-weight:700}
+.section-head .more{margin-left:auto;font-size:13px;color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.section-head .more svg{width:14px;height:14px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.svc{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+}
+.svc:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.svc .ic{width:38px;height:38px;border-radius:9px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:10px}
+.svc .ic svg{width:20px;height:20px}
+.svc h3{font-size:15px;font-weight:700}
+.svc p{font-size:13px;color:var(--muted);margin-top:4px}
+.h-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
+/* ===== 空态 / 弹窗 / 提示 ===== */
+.empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.empty svg{width:44px;height:44px;color:#D4D7DD;margin-bottom:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(15,18,28,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-mask.on{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:84vh;overflow:auto;animation:fade .2s ease}
+.modal .m-head{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal .m-head h3{font-size:16px;font-weight:700}
+.modal .m-close{margin-left:auto;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer}
+.modal .m-close:hover{background:var(--bg)}
+.modal .m-body{padding:20px;display:flex;gap:18px;flex-wrap:wrap}
+.modal .m-body img{width:220px;height:220px;object-fit:cover;border-radius:10px;flex:none;background:#F6F7F9}
+.modal .m-info{flex:1;min-width:220px}
+.modal .m-info .row{display:flex;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.modal .m-info .row span:first-child{color:var(--muted);width:72px;flex:none}
+.modal .m-foot{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--line)}
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:rgba(28,31,38,.92);color:#fff;font-size:13px;padding:10px 18px;border-radius:10px;
+  z-index:100;transition:all .25s ease;pointer-events:none;white-space:nowrap;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 设计编辑器 ===== */
+.editor-shell{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:calc(100vh - 140px)}
+.editor-top{display:flex;align-items:center;gap:2px;border-bottom:1px solid var(--line);padding:6px 10px;background:#fff;flex-wrap:wrap}
+.et-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;font-size:13px;color:var(--ink-2);cursor:pointer;position:relative}
+.et-btn:hover{background:var(--bg)}
+.et-btn.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.et-btn svg{width:14px;height:14px}
+.et-btn .caret{width:10px;height:10px;color:var(--muted)}
+.editor-body{display:flex;flex:1;min-height:0}
+.editor-left{width:232px;border-right:1px solid var(--line);display:flex;flex-direction:column;background:#fff}
+.el-tabs{display:flex;border-bottom:1px solid var(--line)}
+.el-tab{flex:1;padding:10px 4px;font-size:13px;color:var(--ink-2);text-align:center;cursor:pointer;border-bottom:2px solid transparent}
+.el-tab.on{border-bottom-color:var(--accent);color:var(--accent);font-weight:600}
+.el-panel{flex:1;overflow-y:auto;padding:12px}
+.el-search{width:100%;height:32px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;outline:none;background:var(--bg)}
+.el-search:focus{border-color:var(--accent);background:#fff}
+.el-cats{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.el-asset{display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.el-asset:hover{background:var(--bg)}
+.el-asset img{width:44px;height:44px;border-radius:6px;object-fit:cover;flex:none;background:#F6F7F9}
+.el-asset .n{font-size:13px;color:var(--ink)}
+.el-asset .s{font-size:11px;color:var(--muted)}
+.editor-canvas{flex:1;background:#F3F4F6;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.canvas-paper{background:#fff;box-shadow:0 4px 24px rgba(20,24,35,.12);position:relative}
+.canvas-paper.dim2d{filter:grayscale(1)}
+.canvas-paper img{display:block;max-width:min(52vh,420px);width:100%}
+.canvas-meta{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.9);padding:4px 10px;border-radius:6px;display:flex;gap:12px;align-items:center}
+.canvas-meta button{width:22px;height:22px;border-radius:5px;background:var(--bg);display:inline-flex;align-items:center;justify-content:center;color:var(--ink-2)}
+.editor-right{width:236px;border-left:1px solid var(--line);overflow-y:auto;background:#fff}
+.editor-right .sec{padding:12px 14px;border-bottom:1px solid var(--line)}
+.editor-right .sec h4{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.editor-right .sec h4 .edit{font-size:12px;color:var(--accent);cursor:pointer;font-weight:500}
+.frow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:7px 0;flex-wrap:wrap}
+.frow b{color:var(--ink);font-size:13px}
+.frow .val{color:var(--ink);font-weight:600}
+.frow input,.frow select{height:28px;border:1px solid var(--line);border-radius:6px;font-size:12px;padding:0 6px;outline:none;background:#fff;color:var(--ink)}
+.frow input[type=range]{padding:0;border:none;height:auto;accent-color:var(--accent);flex:1}
+.switch{width:34px;height:18px;border-radius:10px;background:#D8DBE1;position:relative;cursor:pointer;transition:background .15s;flex:none}
+.switch::after{content:"";position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .15s}
+.switch.on{background:var(--accent)}
+.switch.on::after{left:18px}
+.print-panel{border-top:1px solid var(--line);background:#FFFDF9;padding:12px 14px}
+.print-panel h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.prow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:6px 0;flex-wrap:wrap}
+.prow .price{color:var(--accent);font-size:16px;font-weight:800}
+.prow select{height:28px;border:1px solid var(--line);border-radius:6px;font-size:12px;padding:0 6px;background:#fff}
+.menu-drop{position:absolute;top:calc(100% + 6px);left:0;min-width:180px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:6px;z-index:60;display:none}
+.menu-drop.on{display:block}
+.menu-drop .mi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--ink-2);cursor:pointer}
+.menu-drop .mi:hover{background:var(--bg)}
+.menu-drop .mi svg{width:14px;height:14px;color:var(--muted)}
+.menu-drop .mi.dis{color:var(--muted)}
+.menu-drop .sep{height:1px;background:var(--line);margin:5px 2px}
+
+/* ===== 云渲染控制台 ===== */
+.render-shell{display:flex;flex-direction:column;background:#16181D;border-radius:12px;overflow:hidden;min-height:calc(100vh - 140px);color:#EDEFF2}
+.render-top{display:flex;align-items:center;gap:2px;background:#1E2128;padding:6px 12px;border-bottom:1px solid #2A2E37;flex-wrap:wrap}
+.rt-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:7px;font-size:13px;color:#B9BEC9;cursor:pointer;position:relative}
+.rt-btn:hover{color:#fff;background:#2A2E37}
+.rt-btn.on{background:#2A2E37;color:#FFB27A;font-weight:600}
+.rt-btn svg{width:14px;height:14px}
+.rt-saved{margin-left:auto;font-size:11px;color:#6B7280;display:flex;align-items:center;gap:6px}
+.rt-saved svg{width:12px;height:12px;color:#34D399}
+.render-body{display:flex;flex:1;min-height:0}
+.render-left{width:250px;border-right:1px solid #2A2E37;display:flex;flex-direction:column;background:#1E2128}
+.rl-tabs{display:flex;border-bottom:1px solid #2A2E37}
+.rl-tab{flex:1;padding:10px 2px;font-size:13px;color:#B9BEC9;text-align:center;cursor:pointer;border-bottom:2px solid transparent}
+.rl-tab.on{color:#FFB27A;border-bottom-color:#FFB27A;font-weight:600}
+.rl-panel{flex:1;overflow-y:auto;padding:10px}
+.rl-filters{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.rl-filters select{height:28px;border-radius:6px;background:#2A2E37;border:1px solid #333846;color:#D6DAE2;font-size:12px;padding:0 6px;outline:none}
+.rl-filters select:focus{border-color:#FFB27A}
+.rl-item{display:flex;gap:8px;padding:7px;border-radius:8px;cursor:pointer;align-items:center}
+.rl-item:hover,.rl-item.on{background:#2A2E37}
+.rl-item.on{border:1px solid #FFB27A}
+.rl-item img{width:52px;height:52px;border-radius:6px;object-fit:cover;flex:none}
+.rl-item .n{font-size:12px;color:#D6DAE2;line-height:1.4}
+.rl-item .s{font-size:11px;color:#7B8190}
+.rl-cat{font-size:11px;color:#7B8190;margin:10px 0 6px;display:flex;justify-content:space-between}
+.rl-cat b{color:#FFB27A}
+.render-main{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(1200px 600px at 50% 40%,#262B35 0%,#16181D 60%)}
+.render-stage{position:relative}
+.render-stage img{display:block;max-width:min(46vh,400px);width:100%;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.render-stage .model-chip{position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);background:#262B35;border:1px solid #3A4050;color:#D6DAE2;font-size:11px;padding:4px 12px;border-radius:16px;white-space:nowrap}
+.render-tools{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.rtool{background:#262B35;border:1px solid #3A4050;color:#D6DAE2;font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.rtool:hover{border-color:#FFB27A;color:#FFB27A}
+.rtool.on{background:#FFB27A;color:#16181D;font-weight:600}
+.render-bottom{display:flex;gap:10px;padding:10px 14px;background:#1E2128;border-top:1px solid #2A2E37;align-items:center;flex-wrap:wrap}
+.rb-label{font-size:12px;color:#7B8190;flex:none}
+.rb-stage{display:flex;gap:6px}
+.rb-btn{background:#2A2E37;border:1px solid #333846;color:#D6DAE2;font-size:12px;padding:5px 12px;border-radius:7px;cursor:pointer}
+.rb-btn:hover,.rb-btn.on{border-color:#FFB27A;color:#FFB27A}
+.rb-render{margin-left:auto;display:flex;gap:8px;align-items:center}
+.rb-render select{height:30px;background:#2A2E37;border:1px solid #333846;color:#D6DAE2;font-size:12px;border-radius:7px;padding:0 6px;outline:none}
+.rb-go{background:#FFB27A;color:#16181D;font-weight:700;padding:7px 20px;border-radius:8px;font-size:13px;cursor:pointer}
+.rb-go:hover{background:#FFC38F}
+.render-props{width:236px;border-left:1px solid #2A2E37;overflow-y:auto;background:#1E2128;padding:12px 14px}
+.render-props h4{font-size:13px;color:#D6DAE2;margin-bottom:10px;font-weight:700}
+.rp-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9AA1AF;margin:9px 0;gap:10px}
+.rp-row b{color:#D6DAE2;font-weight:600}
+.rp-row input[type=range]{flex:1;accent-color:#FFB27A;min-width:0}
+.rp-row .switch{background:#333846}
+.rp-row .switch.on{background:#FFB27A}
+.render-album{padding:20px}
+.album-tabs{display:flex;gap:6px;margin-bottom:16px}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.album-card{background:#1E2128;border:1px solid #2A2E37;border-radius:10px;overflow:hidden;cursor:pointer}
+.album-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.album-card .a-body{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#B9BEC9}
+
+@media (max-width:1100px){
+  .editor-right,.render-props{width:200px}
+}
+@media (max-width:860px){
+  .editor-right,.render-props{display:none}
+  .render-left{width:210px}
+}
+@media (max-width:640px){
+  .render-left{width:170px}
+  .editor-left{width:180px}
+  .editor-canvas{min-height:300px}
+  .render-bottom{gap:6px}
+  .rb-render{margin-left:0}
+}
+
+/* ===== 响应式 ===== */
+@media (max-width:960px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:none;box-shadow:0 10px 40px rgba(15,18,28,.2)}
+  .sidebar-mask.on{display:block}
+  .main{margin-left:0}
+  .menu-btn{display:inline-flex}
+  .top-cta .btn span{display:none}
+  .top-cta .btn{width:36px;padding:0}
+  .ta-btn.hide-sm{display:none}
+}
+@media (max-width:640px){
+  .content{padding:14px}
+  .card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .tpl-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+  .hero{padding:20px}
+  .hero h1{font-size:22px}
+  .page-head h1{font-size:18px}
+  .f-row{gap:6px}
+  .searchbox{display:none}
+  .ta-btn:not(.on){display:none}
+  .ta-btn{min-height:36px}
+  .top-cta .btn{min-width:40px;min-height:40px}
+  .card .ops .btn{height:36px;min-height:36px}
+  .top-cta .btn span{display:none}
+  .top-cta .btn{width:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body><script>location.hash="#/editor";</script>
+<!-- ===== 侧边栏 ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20" rx="3" fill="#FF6A00"/><path d="M4 14h24" stroke="#fff" stroke-width="2"/><path d="M16 14v-6" stroke="#fff" stroke-width="2"/></svg>
+    <span>包小盒<span class="dot">·</span>模板</span>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="nav-foot">包装设计 · 3D 渲染<br>功能模板 v1.0 · 示例数据</div>
+</aside>
+<div class="sidebar-mask" id="sidebarMask"></div>
+
+<!-- ===== 主区 ===== -->
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="打开菜单">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="logo">
+      <svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20" rx="3" fill="#FF6A00"/><path d="M4 14h24" stroke="#fff" stroke-width="2"/><path d="M16 14v-6" stroke="#fff" stroke-width="2"/></svg>
+      <span>包小盒</span>
+    </div>
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" id="globalSearch" placeholder="搜索盒型 / 模板 / 场景">
+    </div>
+    <div class="top-actions">
+      <button class="ta-btn on" data-demo="会员中心（会员权益演示）">会员中心</button>
+      <button class="ta-btn hide-sm" data-demo="小批量印刷（印刷下单演示）">小批量印刷</button>
+      <button class="ta-btn hide-sm" data-demo="更多产品（产品矩阵演示）">更多产品</button>
+      <button class="ta-btn" data-demo="国际版 Pacdora（出海版演示）">国际版</button>
+    </div>
+    <div class="top-cta">
+      <button class="btn btn-primary" data-demo="开始设计（平面设计编辑器演示）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12h14"/></svg><span>开始设计</span></button>
+      <button class="btn btn-ghost" data-demo="创建渲染（3D 渲染控制台演示）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg><span>创建渲染</span></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="wrap">
+      <!-- ===== 视图：首页 ===== -->
+      <section class="view" id="view-home">
+        <div class="hero">
+          <div>
+            <h1>让<em>包装</em>更简单</h1>
+            <p>在线 3D 包装设计工具 · 平面设计与 3D 渲染一站式完成</p>
+            <div class="actions">
+              <button class="btn btn-primary" data-demo="开始设计（平面设计编辑器演示）">开始设计</button>
+              <button class="btn btn-ghost" data-demo="创建渲染（3D 渲染控制台演示）">创建渲染</button>
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-head"><h2>产品 / 服务</h2><span class="more" data-goto="models">查看更多 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></div>
+          <div class="svc-grid">
+            <div class="svc" data-demo="包装竞品分析（跳转 packlens 演示）"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div><h3>包装竞品分析</h3><p>洞察竞品包装趋势与卖点</p></div>
+            <div class="svc" data-demo="下载刀版（结构文件工具演示）"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div><h3>下载刀版</h3><p>结构刀版一键导出</p></div>
+            <div class="svc" data-demo="下载样机（效果图样机工具演示）"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg></div><h3>下载样机</h3><p>营销提案效果图样机</p></div>
+            <div class="svc" data-demo="小批量印刷（印刷下单演示）"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 14h.01M17 14h.01"/></svg></div><h3>小批量印刷</h3><p>设计稿直达印刷生产</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-head"><h2>盒型 / 模型库</h2><span class="more" data-goto="models">查看更多 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></div>
+          <div class="h-preview" id="homeBoxes"></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><h2>模板中心</h2><span class="more" data-goto="templates">查看更多 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></div>
+          <div class="h-preview" id="homeTpls"></div>
+        </div>
+      </section>
+
+      <!-- ===== 视图：我的设计方案 ===== -->
+      <section class="view" id="view-designs">
+        <div class="page-head">
+          <div><h1>我的设计方案</h1><p>方案数量：<b id="designCount"></b></p></div>
+          <div class="actions">
+            <button class="btn btn-primary" data-demo="开始设计（平面设计编辑器演示）">开始设计</button>
+            <button class="btn btn-ghost" data-demo="创建渲染（3D 渲染控制台演示）">创建渲染</button>
+          </div>
+        </div>
+        <div class="card-grid" id="designGrid"></div>
+      </section>
+
+      <!-- ===== 视图：我的渲染方案 ===== -->
+      <section class="view" id="view-renders">
+        <div class="page-head">
+          <div><h1>我的渲染方案</h1><p>渲染方案数量：<b id="renderCount"></b></p></div>
+          <div class="actions"><button class="btn btn-primary" data-demo="创建渲染（3D 渲染控制台演示）">创建渲染</button></div>
+        </div>
+        <div class="card-grid tpl-grid" id="renderGrid"></div>
+      </section>
+
+      <!-- ===== 视图：我的收藏夹 ===== -->
+      <section class="view" id="view-favorites">
+        <div class="page-head">
+          <div><h1>我的收藏夹</h1><p>已收藏 <b id="favCount"></b> 个资源</p></div>
+        </div>
+        <div class="card-grid" id="favGrid"></div>
+      </section>
+
+      <!-- ===== 视图：模板中心 ===== -->
+      <section class="view" id="view-templates">
+        <div class="page-head">
+          <div><h1>模板中心</h1><p>海量官方包装设计模板，一键套用</p></div>
+        </div>
+        <div class="filter-bar">
+          <div class="f-row" id="tplIndustry"></div>
+          <div class="f-row">
+            <span class="f-label">类型</span>
+            <div class="seg" id="tplSeg">
+              <button data-k="all" class="on">全部</button>
+              <button data-k="box">纸盒</button>
+              <button data-k="bag">手提袋</button>
+              <button data-k="pouch">软包装</button>
+              <button data-k="bottle">瓶罐</button>
+            </div>
+            <div class="f-right"><span class="count-hint" id="tplCount"></span></div>
+          </div>
+        </div>
+        <div class="card-grid" id="tplGrid"></div>
+      </section>
+
+      <!-- ===== 视图：盒型 / 模型库 ===== -->
+      <section class="view" id="view-models">
+        <div class="page-head">
+          <div><h1>盒型 / 模型库</h1><p id="modelsTotal"></p></div>
+          <div class="actions">
+            <button class="btn btn-primary" data-demo="从盒型开始设计（编辑器演示）">开始设计</button>
+            <button class="btn btn-ghost" data-demo="将盒型加入渲染（渲染台演示）">创建渲染</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="f-row" id="boxTypeFilter"></div>
+          <div class="f-row">
+            <span class="f-label">印刷</span>
+            <div class="seg" id="printSeg">
+              <button data-k="all" class="on">全部</button>
+              <button data-k="printable">可印刷</button>
+            </div>
+            <span class="f-label">视图</span>
+            <div class="seg" id="dimSeg">
+              <button data-k="3d" class="on">3D</button>
+              <button data-k="2d">2D</button>
+            </div>
+            <div class="f-right">
+              <span class="f-label">排序</span>
+              <select class="sel" id="boxSort">
+                <option value="default">综合排序</option>
+                <option value="new">最新发布</option>
+                <option value="uses">最多使用</option>
+              </select>
+              <span class="count-hint" id="boxCount"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-grid" id="boxGrid"></div>
+      </section>
+
+      <!-- ===== 视图：3D 场景棚拍 ===== -->
+      <section class="view" id="view-scenes">
+        <div class="page-head">
+          <div><h1>3D 场景棚拍</h1><p>一键复用虚拟棚拍，10 秒快速出图</p></div>
+          <div class="actions"><button class="btn btn-primary" data-demo="进入棚拍场景编辑器（演示）">进入棚拍</button></div>
+        </div>
+        <div class="filter-bar">
+          <div class="f-row" id="sceneCat"></div>
+          <div class="f-row">
+            <span class="f-label">用途</span>
+            <select class="sel" id="sceneUse">
+              <option value="all">全部用途</option>
+              <option>营销卖货</option><option>宣传推广</option><option>电商运营</option><option>社媒运营</option><option>销售促单</option>
+            </select>
+            <span class="f-label">行业</span>
+            <select class="sel" id="sceneInd">
+              <option value="all">全部行业</option>
+              <option>食品饮料</option><option>美妆个护</option><option>母婴用品</option><option>生活日化</option><option>数码家电</option><option>医药保健</option>
+            </select>
+            <div class="f-right"><span class="count-hint" id="sceneCount"></span></div>
+          </div>
+        </div>
+        <div class="card-grid tpl-grid" id="sceneGrid"></div>
+      </section>
+
+      <!-- ===== 视图：设计编辑器（复刻 3D云设计编辑器） ===== -->
+      <section class="view" id="view-editor">
+        <div class="editor-shell">
+          <div class="editor-top">
+            <div class="et-btn" id="edFileBtn">文件 <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <div class="menu-drop" id="edFileMenu">
+                <div class="mi" data-demo="重命名方案（演示）">重命名方案</div>
+                <div class="mi" data-demo="新建设计方案（演示）">新建设计方案</div>
+                <div class="mi" data-demo="创建副本（演示）">创建副本</div>
+                <div class="mi" data-demo="历史版本记录（演示）">历史版本记录</div>
+                <div class="sep"></div>
+                <div class="mi" data-demo="保存方案（演示）">保存</div>
+                <div class="mi" data-demo="导入 PSD / AI / PDF（演示）">导入 PSD/AI/PDF</div>
+                <div class="mi" data-demo="导入 CAD（演示）">导入 CAD</div>
+                <div class="mi" data-demo="投稿至模板中心（演示）">投稿至模板中心</div>
+              </div>
+            </div>
+            <div class="et-btn on" id="edMode2d">2D设计</div>
+            <div class="et-btn" id="edMode3d">3D预览</div>
+            <div class="et-btn" data-demo="渲染当前设计（演示）">渲 染</div>
+            <div class="et-btn" id="edExportBtn">导出 <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <div class="menu-drop" id="edExportMenu">
+                <div class="mi" data-demo="导出图片 JPG / PNG（演示）">导出图片</div>
+                <div class="mi" data-demo="导出 PDF（演示）">导出 PDF</div>
+                <div class="mi" data-demo="导出刀版图（演示）">导出刀版图</div>
+                <div class="mi" data-demo="导出矢量 SVG（演示）">导出 SVG</div>
+              </div>
+            </div>
+            <div class="et-btn" id="edPrintBtn">印品选择</div>
+            <div class="et-btn" style="margin-left:auto" data-demo="VIP 会员（演示）">PRO</div>
+          </div>
+          <div class="editor-body">
+            <div class="editor-left">
+              <div class="el-tabs" id="edTabs">
+                <div class="el-tab on" data-t="box">盒型</div>
+                <div class="el-tab" data-t="tpl">模板</div>
+                <div class="el-tab" data-t="asset">素材</div>
+                <div class="el-tab" data-t="text">文字</div>
+                <div class="el-tab" data-t="tool">工具</div>
+                <div class="el-tab" data-t="up">上传</div>
+                <div class="el-tab" data-t="layer">图层</div>
+                <div class="el-tab" data-t="help">帮助</div>
+              </div>
+              <div class="el-panel" id="edPanel"></div>
+            </div>
+            <div class="editor-canvas">
+              <div class="canvas-paper dim2d" id="canvasPaper">
+                <img src="assets/box-gift.jpg" alt="设计画布" id="canvasImg">
+              </div>
+              <div class="canvas-meta"><span>模型ID: 21127734</span><span id="zoomVal">100%</span><button id="zoomOut">-</button><button id="zoomIn">+</button></div>
+            </div>
+            <div class="editor-right">
+              <div class="sec"><h4>画布</h4></div>
+              <div class="sec"><h4>尺寸 / 材质 <span class="edit" data-demo="编辑尺寸（演示）">编辑</span></h4>
+                <div class="frow"><span>制造尺寸 (mm)</span><b><span id="edL">0</span> × <span id="edW">0</span> × <span id="edH">0</span></b></div>
+                <div class="frow"><span>长 L</span><input type="number" id="edInputL" value="0"></div>
+                <div class="frow"><span>宽 W</span><input type="number" id="edInputW" value="0"></div>
+                <div class="frow"><span>高 H</span><input type="number" id="edInputH" value="0"></div>
+                <div class="frow"><span>材质</span><select id="edMat"><option>自定义材质</option><option>白卡纸</option><option>瓦楞纸</option><option>铜版纸</option><option>牛皮纸</option><option>灰板</option></select></div>
+                <div class="frow"><span>厚度</span><span class="val" id="edThick">3mm</span><input type="range" id="edThickRange" min="0" max="10" value="3"></div>
+              </div>
+              <div class="sec"><h4>颜色 / 背景</h4>
+                <div class="frow"><span>颜色</span><input type="color" id="edColor" value="#ffffff"></div>
+                <div class="frow"><span>纹理</span><select id="edTexture"><option>无</option><option>细纹</option><option>牛皮纸纹</option><option>布纹</option></select></div>
+                <div class="frow"><span>开</span><div class="switch" id="edOpen"></div></div>
+                <div class="frow"><span>合</span><div class="switch" id="edClose"></div></div>
+                <div class="frow"><span>外侧 / 内侧</span><div class="seg" id="edSide"><button data-k="outer" class="on">外侧</button><button data-k="inner">内侧</button></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="print-panel" id="printPanel">
+            <h4>印品选择</h4>
+            <div class="prow"><span>面积</span><b id="printArea">0.0m²</b><span>纸张</span><select id="printPaper"><option>白卡纸 350g</option><option>白卡纸 300g</option><option>瓦楞纸 E瓦</option><option>铜版纸 300g</option></select></div>
+            <div class="prow"><span>工艺</span><select id="printCraft"><option>请选择</option><option>覆哑膜</option><option>覆亮膜</option><option>烫金</option><option>UV 局部</option></select><span>数量</span><select id="printQty"><option>500</option><option>1000</option><option>2000</option><option>5000</option></select></div>
+            <div class="prow"><span>价格</span><span class="price" id="printPrice">￥ 0.00</span></div>
+            <div class="prow"><button class="btn btn-primary" data-demo="提交印刷订单（演示）">确认下单</button><span style="font-size:11px;color:var(--muted)">下单即代表您知晓印刷须知 · 1-3 工作日发货 · 全国包邮</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 视图：云渲染控制台（复刻 3D云渲染） ===== -->
+      <section class="view" id="view-render">
+        <div class="render-shell">
+          <div class="render-top">
+            <span class="rt-btn on">云渲染</span>
+            <div class="rt-btn" id="rfFileBtn">文件 <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <div class="menu-drop" id="rfFileMenu">
+                <div class="mi" data-demo="重命名渲染方案（演示）">重命名方案</div>
+                <div class="mi" data-demo="新建渲染方案（演示）">新建渲染方案</div>
+                <div class="mi" data-demo="创建副本（演示）">创建副本</div>
+                <div class="sep"></div>
+                <div class="mi" data-demo="保存方案（演示）">保存</div>
+                <div class="mi" data-demo="导入我的设计方案（演示）">导入我的设计方案</div>
+                <div class="mi" data-demo="预览性能模式（演示）">预览性能模式</div>
+              </div>
+            </div>
+            <div class="rt-btn" data-goto="album">渲染图册</div>
+            <span style="width:1px;height:18px;background:#333846;margin:0 6px"></span>
+            <div class="rt-btn" data-r="scene">场景</div>
+            <div class="rt-btn" data-r="asset">素材</div>
+            <div class="rt-btn" data-r="mat">材质</div>
+            <div class="rt-btn" data-r="light">灯光</div>
+            <div class="rt-btn" data-demo="我的（账号与作品管理演示）">我的</div>
+            <div class="rt-btn" data-demo="帮助（快捷键与客服演示）">帮助</div>
+            <div class="rt-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>22:21 已保存</div>
+          </div>
+          <div class="render-body">
+            <div class="render-left">
+              <div class="rl-tabs" id="rfTabs">
+                <div class="rl-tab on" data-r="scene">场景</div>
+                <div class="rl-tab" data-r="asset">素材</div>
+                <div class="rl-tab" data-r="mat">材质</div>
+                <div class="rl-tab" data-r="light">灯光</div>
+              </div>
+              <div class="rl-panel" id="rfPanel"></div>
+            </div>
+            <div class="render-main">
+              <div class="render-stage">
+                <img src="assets/scene-glass.jpg" alt="渲染预览" id="rfStage">
+                <div class="model-chip" id="rfStageName">未命名设计_01</div>
+              </div>
+              <div class="render-tools">
+                <div class="rtool" data-demo="背景切换（演示）">背景切换</div>
+                <div class="rtool" data-demo="快搭模板（演示）">快搭模板</div>
+                <div class="rtool" data-demo="阴影调节（演示）">阴影</div>
+              </div>
+            </div>
+            <div class="render-props">
+              <h4>属性编辑区</h4>
+              <div class="rp-row"><span>构图比例</span><select id="rfRatio" style="background:#2A2E37;border:1px solid #333846;color:#D6DAE2;font-size:12px;border-radius:6px;padding:4px"><option>4:3</option><option>1:1</option><option>16:9</option><option>9:16</option><option>3:4</option></select></div>
+              <div class="rp-row"><span>总亮度</span><input type="range" min="0" max="200" value="100" id="rfLight"><b id="rfLightVal">100%</b></div>
+              <div class="rp-row"><span>阴影</span><div class="switch" id="rfShadow"></div></div>
+              <div class="rp-row"><span>透明背景</span><div class="switch" id="rfTrans"></div></div>
+              <div class="rp-row"><span>性能模式</span><select id="rfPerf" style="background:#2A2E37;border:1px solid #333846;color:#D6DAE2;font-size:12px;border-radius:6px;padding:4px"><option>高性能</option><option>均衡</option></select></div>
+              <h4 style="margin-top:14px">视角切换</h4>
+              <div style="display:flex;flex-wrap:wrap;gap:6px" id="rfView">
+                <div class="rtool on">正前</div><div class="rtool">前右</div><div class="rtool">前左</div><div class="rtool">顶右</div><div class="rtool">正顶</div><div class="rtool">顶左</div>
+              </div>
+              <div class="rtool" style="margin-top:10px;width:100%;justify-content:center" data-demo="恢复默认视角（演示）">恢复默认</div>
+            </div>
+          </div>
+          <div class="render-bottom">
+            <span class="rb-label">主模型</span>
+            <div class="rb-stage">
+              <div class="rb-btn on" id="rfModelBtn">未命名设计_01</div>
+              <div class="rb-btn" data-demo="添加其他模型（演示）">+ 添加模型</div>
+            </div>
+            <div class="rb-render">
+              <span class="rb-label">清晰度</span>
+              <select id="rfRes"><option>1K</option><option selected>2K</option><option>4K</option></select>
+              <button class="rb-go" id="rfRenderGo">立即渲染</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 视图：渲染图册 ===== -->
+      <section class="view" id="view-album">
+        <div class="page-head">
+          <div><h1>渲染图册</h1><p>历史渲染效果图集与视频</p></div>
+          <div class="actions"><button class="btn btn-primary" data-goto="render">去渲染</button><button class="btn btn-ghost" data-demo="渲染效果反馈（演示）">渲染效果反馈</button></div>
+        </div>
+        <div class="filter-bar">
+          <div class="album-tabs">
+            <div class="seg" id="albumSeg"><button data-k="img" class="on">图集</button><button data-k="video">视频</button></div>
+          </div>
+        </div>
+        <div class="card-grid tpl-grid" id="albumGrid"></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ===== 详情弹窗 / 全局提示 ===== -->
+<div class="modal-mask" id="modalMask">
+  <div class="modal" id="modal">
+    <div class="m-head"><h3 id="mTitle">详情</h3><div class="m-close" id="mClose"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div></div>
+    <div class="m-body" id="mBody"></div>
+    <div class="m-foot" id="mFoot"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+/* ================= 图标库 ================= */
+const IC = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>',
+  design:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12h14"/></svg>',
+  render:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1Z"/></svg>',
+  tpl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>',
+  box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v8l-9 5-9-5V8l9-5Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>',
+  service:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2" y="13" width="4" height="6" rx="1"/><rect x="18" y="13" width="4" height="6" rx="1"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg>',
+  team:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>'
+};
+
+/* ================= 导航配置 ================= */
+const NAV = [
+  {id:'home', label:'首页', icon:IC.home},
+  {label:'我的工作台', children:[
+    {id:'designs', label:'我的设计方案', icon:IC.design},
+    {id:'renders', label:'我的渲染方案', icon:IC.render},
+    {id:'favorites', label:'我的收藏夹', icon:IC.star}
+  ]},
+  {label:'核心工具', children:[
+    {id:'editor', label:'设计编辑器', icon:IC.design},
+    {id:'render', label:'云渲染控制台', icon:IC.render},
+    {id:'album', label:'渲染图册', icon:IC.cam}
+  ]},
+  {label:'设计资源', children:[
+    {id:'templates', label:'模板中心', icon:IC.tpl},
+    {id:'models', label:'盒型/模型库', icon:IC.box},
+    {id:'scenes', label:'3D场景棚拍', icon:IC.cam}
+  ]},
+  {label:'服务', children:[
+    {id:'service', label:'包装服务台', icon:IC.service, demo:'包装服务台（印刷/报价服务演示）'},
+    {id:'team', label:'团队版', icon:IC.team, demo:'团队版（多人协作演示）'}
+  ]}
+];
+function renderNav(){
+  const nav = document.getElementById('nav');
+  let html = '';
+  NAV.forEach(g=>{
+    if(g.id){
+      html += `<div class="nav-item" data-view="${g.id}">${g.icon}<span>${g.label}</span></div>`;
+    }else{
+      html += `<div class="nav-group"><div class="nav-group-title">${g.label}</div>`;
+      g.children.forEach(c=>{
+        if(c.demo) html += `<div class="nav-item" data-demo="${c.demo}">${c.icon}<span>${c.label}</span></div>`;
+        else html += `<div class="nav-item sub" data-view="${c.id}">${c.icon}<span>${c.label}</span></div>`;
+      });
+      html += '</div>';
+    }
+  });
+  nav.innerHTML = html;
+}
+
+/* ================= 示例数据 ================= */
+const BOX_TYPES = ['全部','纸盒','精装盒','手提袋','封套/卡片/文件','纸箱','软包装','内衬','瓶子','展示盒/架','罐子','异形盒','杯/桶/碗/盒/管','其他'];
+const BOXES = [
+  {code:'220010', name:'手提袋', type:'手提袋', img:'assets/box-bag.jpg', size:'1种固定尺寸', mats:['白卡纸','瓦楞纸'], printable:true, custom:false, uses:32104, ver:'3D'},
+  {code:'360110', name:'异型书型精品翻盖礼盒', type:'精装盒', img:'assets/box-gift.jpg', size:'3种固定尺寸', mats:['铜版纸','灰板'], printable:false, custom:true, uses:28902, ver:'3D'},
+  {code:'100010', name:'反向插锁盒', type:'纸盒', img:'assets/box-flip.jpg', size:'可改尺寸', mats:['白卡纸'], printable:true, custom:true, uses:27453, ver:'3D'},
+  {code:'501000', name:'液体饮料食品饮料塑料瓶包装模型', type:'瓶子', img:'assets/box-bottle.jpg', size:'3种固定尺寸', mats:['油光塑料'], printable:false, custom:true, uses:24118, ver:'3D'},
+  {code:'200010', name:'瓦楞运输纸箱', type:'纸箱', img:'assets/box-carton.jpg', size:'可改尺寸', mats:['瓦楞纸'], printable:true, custom:true, uses:21776, ver:'3D'},
+  {code:'430020', name:'三边封袋', type:'软包装', img:'assets/box-pouch.jpg', size:'可改尺寸', mats:['油光塑料','哑光塑料','油光金属'], printable:false, custom:true, uses:19882, ver:'3D'},
+  {code:'300010', name:'圆柱形马口铁罐', type:'罐子', img:'assets/box-can.jpg', size:'4种固定尺寸', mats:['马口铁'], printable:true, custom:false, uses:18647, ver:'3D'},
+  {code:'510100', name:'立式透明展示架', type:'展示盒/架', img:'assets/box-display.jpg', size:'可改尺寸', mats:['亚克力'], printable:false, custom:true, uses:16215, ver:'3D'},
+  {code:'500100', name:'琥珀玻璃瓶包装模型', type:'瓶子', img:'assets/box-glass.jpg', size:'4种固定尺寸', mats:['油光玻璃','哑光玻璃'], printable:false, custom:true, uses:14902, ver:'3D'},
+  {code:'410010', name:'钻石切割异形礼盒', type:'异形盒', img:'assets/box-irregular.jpg', size:'可改尺寸', mats:['特种纸','灰板'], printable:true, custom:true, uses:13211, ver:'3D'},
+  {code:'520010', name:'海绵内衬底座', type:'内衬', img:'assets/box-insert.jpg', size:'可改尺寸', mats:['EVA泡棉'], printable:false, custom:true, uses:11504, ver:'3D'},
+  {code:'400010', name:'一次性纸杯包装模型', type:'杯/桶/碗/盒/管', img:'assets/box-cup.jpg', size:'4种固定尺寸', mats:['白卡纸','油光塑料'], printable:true, custom:false, uses:9803, ver:'3D'}
+];
+const TPLS = [
+  {name:'苹果果汁软糖塑料袋包装设计', img:'assets/box-pouch.jpg', ind:'食品饮料', kind:'pouch', printable:true},
+  {name:'键盘翻盖盒包装设计', img:'assets/box-carton.jpg', ind:'数码家电', kind:'box', printable:true},
+  {name:'蜂蜜马口铁罐包装设计', img:'assets/box-can.jpg', ind:'食品饮料', kind:'bottle', printable:true},
+  {name:'美妆展示盒包装设计', img:'assets/box-display.jpg', ind:'医药保健', kind:'box', printable:false},
+  {name:'乌龙茶饮纸盒包装设计', img:'assets/box-flip.jpg', ind:'食品饮料', kind:'box', printable:true},
+  {name:'手机充电器纸盒包装设计', img:'assets/box-carton.jpg', ind:'数码家电', kind:'box', printable:true},
+  {name:'简约灯泡纸盒包装设计', img:'assets/box-gift.jpg', ind:'数码家电', kind:'box', printable:true},
+  {name:'头戴式耳机纸盒包装设计', img:'assets/box-flip.jpg', ind:'数码家电', kind:'box', printable:true},
+  {name:'蓝牙耳机纸盒包装设计', img:'assets/box-carton.jpg', ind:'数码家电', kind:'box', printable:true},
+  {name:'烘焙礼盒天地盒包装设计', img:'assets/box-gift.jpg', ind:'日常用品', kind:'box', printable:true},
+  {name:'文创手提袋包装设计', img:'assets/box-bag.jpg', ind:'服饰箱包', kind:'bag', printable:true},
+  {name:'茶饮玻璃瓶包装设计', img:'assets/box-bottle.jpg', ind:'食品饮料', kind:'bottle', printable:false}
+];
+const SCENES = [
+  {name:'玻璃瓶专属场景', img:'assets/scene-glass.jpg', cat:'新媒体电商设计', use:'电商运营', ind:'食品饮料'},
+  {name:'简约风食品饮料绿色几何台面场景', img:'assets/scene-minimal.jpg', cat:'海报设计', use:'宣传推广', ind:'食品饮料'},
+  {name:'中国风饮品茶叶礼盒台面场景', img:'assets/scene-chinese.jpg', cat:'营销广告', use:'销售促单', ind:'食品饮料'},
+  {name:'电商促销护肤品飘浮场景', img:'assets/scene-ecommerce.jpg', cat:'电商设计', use:'营销卖货', ind:'美妆个护'},
+  {name:'直播间带货陈列场景', img:'assets/scene-live.jpg', cat:'直播带货', use:'社媒运营', ind:'食品饮料'},
+  {name:'节日礼盒营销场景', img:'assets/scene-festival.jpg', cat:'节日热点', use:'营销卖货', ind:'生活日化'},
+  {name:'展会新品发布展台场景', img:'assets/scene-minimal.jpg', cat:'活动展会设计', use:'宣传推广', ind:'数码家电'},
+  {name:'新品提案简约台面场景', img:'assets/scene-glass.jpg', cat:'提案', use:'销售促单', ind:'美妆个护'}
+];
+const SCENE_CATS = ['全部','新媒体电商设计','海报设计','直播带货','节日热点','营销广告','电商设计','活动展会设计','提案'];
+const TPL_INDS = ['全部','食品饮料','数码家电','日常用品','生活服务','医药保健','服饰箱包','原材料'];
+const DESIGNS = [
+  {name:'未命名设计', img:'assets/box-flip.jpg', size:'0*0*0mm', date:'09/22 20:47', printable:false},
+  {name:'未命名设计', img:'assets/box-bag.jpg', size:'0*0*0mm', date:'09/22 19:12', printable:false},
+  {name:'【参数化】手提袋', img:'assets/box-bag.jpg', size:'220.4*80.4*280.6mm', date:'09/18 14:31', printable:true},
+  {name:'后开扣底盒', img:'assets/box-flip.jpg', size:'79*47*161.8mm', date:'07/30 12:00', printable:true},
+  {name:'加厚斜面背板扣底展示盒', img:'assets/box-display.jpg', size:'266*216*105mm', date:'05/28 20:03', printable:true},
+  {name:'米面杂粮食品饮料塑料袋包装模型', img:'assets/box-pouch.jpg', size:'80*100*30mm', date:'05/23 23:23', printable:false},
+  {name:'夏威夷每日坚果塑料袋包装设计', img:'assets/box-pouch.jpg', size:'120*170*0mm', date:'05/09 17:33', printable:false},
+  {name:'扣底盒', img:'assets/box-gift.jpg', size:'85.6*55.6*181.1mm', date:'05/07 23:54', printable:true}
+];
+const RENDERS = [
+  {name:'未命名的渲染', img:'assets/scene-glass.jpg', date:'09月22日 21:03'},
+  {name:'未命名的渲染', img:'assets/scene-minimal.jpg', date:'09月22日 19:12'},
+  {name:'未命名的渲染', img:'assets/scene-chinese.jpg', date:'09月22日 18:49'},
+  {name:'未命名的渲染', img:'assets/scene-ecommerce.jpg', date:'09月21日 16:30'},
+  {name:'未命名的渲染', img:'assets/scene-live.jpg', date:'09月20日 11:05'},
+  {name:'未命名的渲染', img:'assets/scene-festival.jpg', date:'09月19日 22:41'}
+];
+const FAVS = [
+  {name:'手提袋（白卡纸）', img:'assets/box-bag.jpg', note:'盒型 · 可印刷'},
+  {name:'天地盖精品礼盒', img:'assets/box-gift.jpg', note:'盒型 · 可改尺寸'},
+  {name:'三边封袋', img:'assets/box-pouch.jpg', note:'盒型 · 可改尺寸'},
+  {name:'玻璃瓶专属场景', img:'assets/scene-glass.jpg', note:'场景 · 新媒体电商设计'},
+  {name:'直播间带货陈列场景', img:'assets/scene-live.jpg', note:'场景 · 直播带货'},
+  {name:'节日礼盒营销场景', img:'assets/scene-festival.jpg', note:'场景 · 节日热点'}
+];
+
+/* ================= 状态 ================= */
+const S = {
+  view:'home',
+  bType:'全部', print:'all', dim:'3d', sort:'default', bQ:'',
+  tInd:'全部', tKind:'all', tQ:'',
+  sCat:'全部', sUse:'all', sInd:'all', sQ:'',
+  favs:new Set(['220010','360110','430020','scene-glass','scene-live','scene-festival'])
+};
+
+/* ================= 通用工具 ================= */
+function el(id){return document.getElementById(id)}
+function toast(msg){
+  const t = el('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.classList.remove('on'), 1800);
+}
+function openModal(title, html, footHtml){
+  el('mTitle').textContent = title;
+  el('mBody').innerHTML = html;
+  el('mFoot').innerHTML = footHtml || '';
+  el('modalMask').classList.add('on');
+}
+function closeModal(){el('modalMask').classList.remove('on')}
+function fmt(n){return n>=10000?(n/10000).toFixed(1)+'万':n}
+
+/* ================= 渲染：盒型卡 ================= */
+function boxCard(b){
+  const badges = [];
+  if(b.printable) badges.push('<span class="badge printable">可印刷</span>');
+  if(b.custom) badges.push('<span class="badge custom">可改尺寸</span>');
+  else badges.push(`<span class="badge dim">${b.size}</span>`);
+  const matTags = b.mats.map(m=>`<span class="tag">${m}</span>`).join('');
+  const fav = S.favs.has(b.code) ? `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>` : IC.heart;
+  return `<div class="card ${S.dim==='2d'?'dim2d':''}" data-kind="box" data-code="${b.code}">
+    <div class="thumb"><img src="${b.img}" alt="${b.name}" loading="lazy"><div class="badges">${badges.join('')}</div></div>
+    <div class="body">
+      <div class="name">${b.name}</div>
+      <div class="meta"><span>${b.code}</span><span>${b.size}</span><span>${fmt(b.uses)} 次使用</span></div>
+      <div class="tags">${matTags}</div>
+      <div class="ops">
+        <button class="btn btn-primary mini" data-demo="从「${b.name}」开始平面设计（演示）">设计</button>
+        <button class="btn btn-ghost mini" data-demo="将「${b.name}」加入 3D 渲染（演示）">渲染</button>
+        <button class="btn btn-ghost mini" data-fav="${b.code}">${fav}</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderBoxes(){
+  const grid = el('boxGrid');
+  let list = BOXES.slice();
+  if(S.bType!=='全部') list = list.filter(b=>b.type===S.bType);
+  if(S.print==='printable') list = list.filter(b=>b.printable);
+  if(S.bQ) list = list.filter(b=>b.name.includes(S.bQ)||b.code.includes(S.bQ));
+  if(S.sort==='new') list = list.slice().reverse();
+  if(S.sort==='uses') list = list.slice().sort((a,b)=>b.uses-a.uses);
+  el('boxCount').textContent = `共 ${list.length} 款盒型`;
+  grid.innerHTML = list.length ? list.map(boxCard).join('') : emptyHtml('没有找到匹配的盒型，试试其他筛选条件');
+}
+
+/* ================= 渲染：模板卡 ================= */
+function tplCard(t){
+  return `<div class="card" data-kind="tpl" data-name="${t.name}">
+    <div class="thumb"><img src="${t.img}" alt="${t.name}" loading="lazy">${t.printable?'<div class="badges"><span class="badge printable">可印刷</span></div>':''}</div>
+    <div class="body">
+      <div class="name">${t.name}</div>
+      <div class="tags"><span class="tag">包小盒·官方</span><span class="tag">${t.ind}</span></div>
+      <div class="ops">
+        <button class="btn btn-primary mini" data-demo="套用「${t.name}」开始设计（演示）">套用</button>
+        <button class="btn btn-ghost mini" data-demo="预览「${t.name}」效果图（演示）">预览</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderTpls(){
+  const grid = el('tplGrid');
+  let list = TPLS.slice();
+  if(S.tInd!=='全部') list = list.filter(t=>t.ind===S.tInd);
+  if(S.tKind!=='all') list = list.filter(t=>t.kind===S.tKind);
+  if(S.tQ) list = list.filter(t=>t.name.includes(S.tQ));
+  el('tplCount').textContent = `共 ${list.length} 款模板`;
+  grid.innerHTML = list.length ? list.map(tplCard).join('') : emptyHtml('没有找到匹配的模板');
+}
+
+/* ================= 渲染：场景卡 ================= */
+function sceneCard(s){
+  return `<div class="card scene-card" data-kind="scene" data-name="${s.name}">
+    <div class="thumb">
+      <img src="${s.img}" alt="${s.name}" loading="lazy">
+      <div class="badges"><span class="badge cat-tag">${s.cat}</span></div>
+      <div class="cover"></div>
+    </div>
+    <div class="body">
+      <div class="name">${s.name}</div>
+      <div class="use-line">用途：${s.use} · 行业：${s.ind}</div>
+      <div class="ops">
+        <button class="btn btn-primary mini" data-demo="进入「${s.name}」一键棚拍（演示）">使用场景</button>
+        <button class="btn btn-ghost mini" data-demo="收藏「${s.name}」（演示）">收藏</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderScenes(){
+  const grid = el('sceneGrid');
+  let list = SCENES.slice();
+  if(S.sCat!=='全部') list = list.filter(s=>s.cat===S.sCat);
+  if(S.sUse!=='all') list = list.filter(s=>s.use===S.sUse);
+  if(S.sInd!=='all') list = list.filter(s=>s.ind===S.sInd);
+  if(S.sQ) list = list.filter(s=>s.name.includes(S.sQ));
+  el('sceneCount').textContent = `共 ${list.length} 个场景`;
+  grid.innerHTML = list.length ? list.map(sceneCard).join('') : emptyHtml('没有找到匹配的场景');
+}
+
+/* ================= 渲染：设计方案 / 渲染 / 收藏 ================= */
+function designCard(d){
+  return `<div class="card" data-kind="design" data-name="${d.name}">
+    <div class="thumb"><img src="${d.img}" alt="${d.name}" loading="lazy">${d.printable?'<div class="badges"><span class="badge printable">可印刷</span></div>':''}</div>
+    <div class="body">
+      <div class="name">${d.name}</div>
+      <div class="meta"><span>${d.size}</span><span>${d.date}</span></div>
+      <div class="ops">
+        <button class="btn btn-primary mini" data-goto="editor">去设计</button>
+        <button class="btn btn-ghost mini" data-goto="render">去渲染</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderCard(html){return html}
+function renderDesigns(){
+  el('designCount').textContent = DESIGNS.length + ' / 无限';
+  el('designGrid').innerHTML = DESIGNS.map(designCard).join('');
+}
+function renderRenders(){
+  el('renderCount').textContent = RENDERS.length;
+  el('renderGrid').innerHTML = RENDERS.map(r=>`<div class="card" data-kind="render" data-name="${r.name}">
+    <div class="thumb"><img src="${r.img}" alt="${r.name}" loading="lazy"></div>
+    <div class="body"><div class="name">${r.name}</div><div class="meta"><span>${r.date}</span></div>
+    <div class="ops"><button class="btn btn-primary mini" data-demo="打开「${r.name}」渲染方案（演示）">打开</button></div></div>
+  </div>`).join('');
+}
+function renderFavs(){
+  const favBoxes = BOXES.filter(b=>S.favs.has(b.code)).map(boxCard).join('');
+  const favScenes = SCENES.filter(s=>S.favs.has(s.name)).map(sceneCard).join('');
+  el('favCount').textContent = S.favs.size;
+  el('favGrid').innerHTML = (favBoxes + favScenes) || emptyHtml('收藏夹是空的，去盒型库和场景棚拍逛逛吧');
+}
+
+/* ================= 首页 ================= */
+function renderHome(){
+  el('homeBoxes').innerHTML = BOXES.slice(0,4).map(boxCard).join('');
+  el('homeTpls').innerHTML = TPLS.slice(0,4).map(tplCard).join('');
+}
+
+/* ================= 路由 ================= */
+const VIEWS = {home:'view-home', designs:'view-designs', renders:'view-renders', favorites:'view-favorites', templates:'view-templates', models:'view-models', scenes:'view-scenes', editor:'view-editor', render:'view-render', album:'view-album'};
+function route(){
+  const hash = location.hash.replace(/^#\/?/,'') || 'home';
+  const view = VIEWS[hash] ? hash : 'home';
+  S.view = view;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  el(VIEWS[view]).classList.add('on');
+  document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.classList.toggle('active', n.dataset.view===view));
+  document.querySelectorAll('.nav-item.sub[data-view]').forEach(n=>n.classList.toggle('active', n.dataset.view===view));
+  const grid = {designs:renderDesigns, renders:renderRenders, favorites:renderFavs, templates:renderTpls, models:renderBoxes, scenes:renderScenes, home:renderHome, editor:renderEditor, render:renderRender, album:renderAlbum}[view];
+  if(grid) grid();
+  closeSidebar();
+  window.scrollTo({top:0});
+}
+function goto(view){location.hash = '#/'+view}
+
+/* ================= 筛选初始化 ================= */
+function buildChips(containerId, list, key, activeVal, onPick){
+  el(containerId).innerHTML = list.map(v=>`<span class="chip ${v===activeVal?'on':''}" data-k="${v}">${v}</span>`).join('');
+  el(containerId).querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click', ()=>{ onPick(c.dataset.k); });
+  });
+}
+
+/* ================= 空态 ================= */
+function emptyHtml(msg){
+  return `<div class="empty">${IC.box}<div>${msg}</div></div>`;
+}
+
+/* ================= 事件绑定 ================= */
+function bindEvents(){
+  // 侧边栏
+  document.getElementById('sidebarMask').addEventListener('click', closeSidebar);
+  el('menuBtn').addEventListener('click', ()=>{el('sidebar').classList.add('open'); el('sidebarMask').classList.add('on')});
+  // 导航（事件委托）
+  document.getElementById('nav').addEventListener('click', e=>{
+    const t = e.target.closest('[data-view],[data-demo]');
+    if(!t) return;
+    if(t.dataset.view) goto(t.dataset.view);
+    else if(t.dataset.demo) toast(t.dataset.demo);
+  });
+  // 全局点击：demo / goto / fav / 卡片详情
+  document.addEventListener('click', e=>{
+    const demo = e.target.closest('[data-demo]');
+    if(demo){ toast(demo.dataset.demo); return; }
+    const g = e.target.closest('[data-goto]');
+    if(g){ goto(g.dataset.goto); return; }
+    const fav = e.target.closest('[data-fav]');
+    if(fav){
+      const code = fav.dataset.fav;
+      if(S.favs.has(code)){S.favs.delete(code)}else{S.favs.add(code)}
+      toast(S.favs.has(code)?'已加入收藏':'已取消收藏');
+      renderFavs();
+      if(S.view==='models') renderBoxes();
+      e.stopPropagation();
+      return;
+    }
+    const card = e.target.closest('.card[data-kind]');
+    if(card && !e.target.closest('button')){
+      const kind = card.dataset.kind;
+      if(kind==='box'){
+        const b = BOXES.find(x=>x.code===card.dataset.code);
+        openModal(b.name, `<img src="${b.img}" alt="${b.name}">
+          <div class="m-info">
+            <div class="row"><span>型号</span><b>${b.code}</b></div>
+            <div class="row"><span>类型</span>${b.type}</div>
+            <div class="row"><span>尺寸</span>${b.size}</div>
+            <div class="row"><span>材质</span>${b.mats.join('、')}</div>
+            <div class="row"><span>印刷</span>${b.printable?'支持印刷':'暂不支持印刷'}</div>
+            <div class="row"><span>使用量</span>${fmt(b.uses)} 次</div>
+          </div>`,
+          `<button class="btn btn-primary" data-demo="从「${b.name}」开始设计（演示）">开始设计</button>
+           <button class="btn btn-ghost" data-demo="将「${b.name}」加入渲染（演示）">创建渲染</button>`);
+      }else if(kind==='tpl'){
+        const t = TPLS.find(x=>x.name===card.dataset.name);
+        openModal(t.name, `<img src="${t.img}" alt="${t.name}">
+          <div class="m-info"><div class="row"><span>来源</span>包小盒·官方模板</div>
+          <div class="row"><span>行业</span>${t.ind}</div>
+          <div class="row"><span>印刷</span>${t.printable?'支持印刷':'暂不支持印刷'}</div></div>`,
+          `<button class="btn btn-primary" data-demo="套用「${t.name}」开始设计（演示）">套用模板</button>`);
+      }else if(kind==='scene'){
+        const s = SCENES.find(x=>x.name===card.dataset.name);
+        openModal(s.name, `<img src="${s.img}" alt="${s.name}">
+          <div class="m-info"><div class="row"><span>场景</span>${s.cat}</div>
+          <div class="row"><span>用途</span>${s.use}</div>
+          <div class="row"><span>行业</span>${s.ind}</div></div>`,
+          `<button class="btn btn-primary" data-demo="进入「${s.name}」一键棚拍（演示）">使用场景</button>`);
+      }else if(kind==='design'){
+        const d = DESIGNS.find(x=>x.name===card.dataset.name);
+        openModal(d.name, `<img src="${d.img}" alt="${d.name}">
+          <div class="m-info"><div class="row"><span>尺寸</span>${d.size}</div>
+          <div class="row"><span>更新</span>${d.date}</div></div>`,
+          `<button class="btn btn-primary" data-demo="打开「${d.name}」继续设计（演示）">去设计</button>
+           <button class="btn btn-ghost" data-demo="对「${d.name}」创建渲染（演示）">去渲染</button>`);
+      }else if(kind==='render'){
+        const r = RENDERS.find(x=>x.name===card.dataset.name);
+        openModal(r.name, `<img src="${r.img}" alt="${r.name}">
+          <div class="m-info"><div class="row"><span>创建时间</span>${r.date}</div></div>`,
+          `<button class="btn btn-primary" data-demo="打开「${r.name}」渲染方案（演示）">打开方案</button>`);
+      }
+    }
+  });
+  // 弹窗
+  el('mClose').addEventListener('click', closeModal);
+  el('modalMask').addEventListener('click', e=>{if(e.target===el('modalMask')) closeModal()});
+  // 全局搜索
+  el('globalSearch').addEventListener('input', e=>{
+    const q = e.target.value.trim();
+    if(S.view==='models'){S.bQ=q; renderBoxes()}
+    else if(S.view==='templates'){S.tQ=q; renderTpls()}
+    else if(S.view==='scenes'){S.sQ=q; renderScenes()}
+    else if(q){goto('models'); S.bQ=q; setTimeout(renderBoxes, 50); el('globalSearch').value=q;}
+  });
+  // 盒型筛选
+  buildChips('boxTypeFilter', BOX_TYPES, 'bType', S.bType, k=>{S.bType=k; renderBoxes()});
+  el('printSeg').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+    el('printSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    S.print = b.dataset.k; renderBoxes();
+  }));
+  el('dimSeg').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+    el('dimSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    S.dim = b.dataset.k; renderBoxes();
+  }));
+  el('boxSort').addEventListener('change', e=>{S.sort=e.target.value; renderBoxes()});
+  // 模板筛选
+  buildChips('tplIndustry', TPL_INDS, 'tInd', S.tInd, k=>{S.tInd=k; renderTpls()});
+  el('tplSeg').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+    el('tplSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    S.tKind = b.dataset.k; renderTpls();
+  }));
+  // 场景筛选
+  buildChips('sceneCat', SCENE_CATS, 'sCat', S.sCat, k=>{S.sCat=k; renderScenes()});
+  el('sceneUse').addEventListener('change', e=>{S.sUse=e.target.value; renderScenes()});
+  el('sceneInd').addEventListener('change', e=>{S.sInd=e.target.value; renderScenes()});
+}
+function closeSidebar(){
+  el('sidebar').classList.remove('open');
+  el('sidebarMask').classList.remove('on');
+}
+
+/* ================= 编辑器 / 渲染台数据 ================= */
+const E_TEXT_PRESETS = ['基础文字','文字组合','标题文字','产品卖点','保质期信息','品牌名','广告语'];
+const E_TOOLS = [
+  {n:'条形码', s:'快速生成一维码，支持 4 种码制', ic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5v14M8 5v14M12 5v14M16 5v14M20 5v14M2 9v6M22 9v6"/></svg>'},
+  {n:'二维码', s:'快速生成二维码设计使用', ic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 14v7M14 21h7"/></svg>'}
+];
+const R_SCENES = [
+  {name:'玻璃瓶专属场景', img:'assets/scene-glass.jpg', use:'电商运营', ind:'食品饮料', color:'白'},
+  {name:'简约风纸盒绿色几何台面场景', img:'assets/scene-minimal.jpg', use:'宣传推广', ind:'食品饮料', color:'绿'},
+  {name:'中国风饮品茶叶礼盒台面场景', img:'assets/scene-chinese.jpg', use:'销售促单', ind:'食品饮料', color:'暖'},
+  {name:'电商促销护肤品飘浮场景', img:'assets/scene-ecommerce.jpg', use:'营销卖货', ind:'美妆个护', color:'橙'},
+  {name:'直播间带货陈列场景', img:'assets/scene-live.jpg', use:'社媒运营', ind:'食品饮料', color:'蓝'},
+  {name:'节日礼盒营销场景', img:'assets/scene-festival.jpg', use:'营销卖货', ind:'生活日化', color:'红'},
+  {name:'简约风日用品洗手液紫色台面场景', img:'assets/scene-minimal.jpg', use:'宣传推广', ind:'生活日化', color:'紫'},
+  {name:'科技风饮料牛奶瓶蓝色台面场景', img:'assets/scene-glass.jpg', use:'电商运营', ind:'食品饮料', color:'蓝'},
+  {name:'卡通风生活日化洗衣凝珠紫色台面场景', img:'assets/scene-live.jpg', use:'社媒运营', ind:'生活日化', color:'紫'},
+  {name:'简约风食品饮料花茶纸盒紫色台面场景', img:'assets/scene-festival.jpg', use:'销售促单', ind:'食品饮料', color:'紫'}
+];
+const R_MATS = [
+  {cat:'纸质', items:['瓦楞纸','铜版纸哑光','铜版纸光面']},
+  {cat:'金属', items:['镀银','镀金','磨砂镀金']},
+  {cat:'塑料', items:['哑光白塑料','油光白塑料','哑光透明塑料']},
+  {cat:'玻璃/陶瓷', items:['哑光陶瓷','油光陶瓷','哑光玻璃']},
+  {cat:'木质', items:['胡桃木','原木','软木塞']},
+  {cat:'布料/皮革', items:['帆布布料','亚麻布','灰咖皮质']},
+  {cat:'石材', items:['水磨石','爵士白大理石','水泥']}
+];
+const R_LIGHTS = ['自然暖阳光','顶射聚焦','冷暖光','清冷光','白天高光','白天柔光'];
+const ALBUM = [
+  {name:'未命名的渲染', img:'assets/scene-glass.jpg', date:'09月22日 21:03'},
+  {name:'未命名的渲染', img:'assets/scene-minimal.jpg', date:'09月22日 19:12'},
+  {name:'未命名的渲染', img:'assets/scene-chinese.jpg', date:'09月22日 18:49'},
+  {name:'未命名的渲染', img:'assets/scene-ecommerce.jpg', date:'09月21日 16:30'}
+];
+
+/* ================= 设计编辑器 ================= */
+const ED_STATE = {tab:'box', mode:'2d', print:false, zoom:100};
+function edAssetCard(a){
+  return `<div class="el-asset" data-demo="将素材「${a.n}」放入画布（演示）"><img src="${a.img}" alt="${a.n}" loading="lazy"><div><div class="n">${a.n}</div><div class="s">${a.s||''}</div></div></div>`;
+}
+function edPanelHtml(){
+  const t = ED_STATE.tab;
+  if(t==='box'){
+    return `<input class="el-search" placeholder="搜索盒型">
+      <div class="el-cats" id="edBoxCats">${['热门','纸盒','精装盒','手提袋','封套/卡片/文件','更多'].map((c,i)=>`<span class="chip soft ${i===0?'on':''}" data-cat="${c}">${c}</span>`).join('')}</div>
+      <div class="frow" style="margin-top:6px"><span class="chip" data-demo="导入 CAD（上传盒型结构）演示">导入 CAD</span><span class="chip" data-demo="推荐盒型 / 我的盒型（演示）">我的盒型</span></div>
+      ${BOXES.slice(0,8).map(b=>`<div class="el-asset" data-demo="切换盒型为「${b.name}」（演示）"><img src="${b.img}" alt="${b.name}" loading="lazy"><div><div class="n">${b.name}</div><div class="s">${b.mats.join(' / ')}</div></div></div>`).join('')}`;
+  }
+  if(t==='tpl'){
+    return `<input class="el-search" placeholder="搜索模板">
+      <div class="el-cats">${['热门','食品饮料','数码家电','日常用品','更多'].map((c,i)=>`<span class="chip soft ${i===0?'on':''}">${c}</span>`).join('')}</div>
+      ${TPLS.slice(0,8).map(tp=>`<div class="el-asset" data-demo="套用模板「${tp.name}」（演示）"><img src="${tp.img}" alt="${tp.name}" loading="lazy"><div><div class="n">${tp.name}</div><div class="s">${tp.printable?'可印刷':'参考模板'}</div></div></div>`).join('')}`;
+  }
+  if(t==='asset'){
+    return `<div class="el-cats">${['全部','形状','图标','插画','抠图','我的收藏','我购买的'].map((c,i)=>`<span class="chip soft ${i===0?'on':''}">${c}</span>`).join('')}</div>
+      <div class="frow" style="color:var(--muted)">素材分类（形状 / 图标 / 插画 / 抠图）</div>
+      ${BOXES.slice(0,6).map(b=>edAssetCard({n:b.name.split('包装')[0]||b.name, s:'素材', img:b.img})).join('')}`;
+  }
+  if(t==='text'){
+    return `<div class="frow"><span class="chip" data-demo="点击添加文字（演示）">点击添加文字</span></div>
+      <div class="el-cats">${E_TEXT_PRESETS.map((p,i)=>`<span class="chip soft ${i===0?'on':''}" data-demo="添加「${p}」（演示）">${p}</span>`).join('')}</div>
+      <div class="frow" style="color:var(--muted);font-size:12px">文字组合：标题 / 卖点 / 保质期 / 品牌 / 广告语一键排版</div>`;
+  }
+  if(t==='tool'){
+    return `<div class="frow" style="color:var(--muted)">工具</div>
+      ${E_TOOLS.map(x=>`<div class="el-asset" data-demo="打开「${x.n}」生成器（演示）"><div style="width:44px;height:44px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none">${x.ic}</div><div><div class="n">${x.n}</div><div class="s">${x.s}</div></div></div>`).join('')}`;
+  }
+  if(t==='up'){
+    return `<div class="frow"><span class="chip" data-demo="上传图片 JPG / PNG / SVG（演示）">上传图片</span></div>
+      <div class="frow" style="color:var(--muted)">支持 JPG / PNG / SVG 等格式文件</div>
+      <div class="frow"><span style="color:var(--muted)">个人空间已使用</span><b>758.83M / 2048M</b></div>
+      <div style="height:6px;border-radius:3px;background:var(--bg);overflow:hidden;margin-top:4px"><div style="width:37%;height:100%;background:var(--accent)"></div></div>`;
+  }
+  if(t==='layer'){
+    return `<div class="frow" style="color:var(--muted)">图层</div>
+      ${['设计图层','文字图层','图片图层','盒型图层'].map((n,i)=>`<div class="el-asset" data-demo="选中图层「${n}」（演示）"><div style="width:44px;height:44px;border-radius:6px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex:none">${IC.box}</div><div><div class="n">${n}</div><div class="s">图层 ${i+1}</div></div></div>`).join('')}`;
+  }
+  if(t==='help'){
+    return `<div class="el-asset" data-demo="咨询客服（演示）"><div style="width:44px;height:44px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none">${IC.service}</div><div><div class="n">咨询客服</div><div class="s">9:00-18:00</div></div></div>
+      <div class="el-asset" data-demo="快速上手教程（演示）">${IC.cam}<div><div class="n">快速上手</div></div></div>
+      <div class="el-asset" data-demo="快捷键说明（演示）">${IC.tpl}<div><div class="n">快捷键</div></div></div>`;
+  }
+  return '';
+}
+function renderEditor(){
+  el('edPanel').innerHTML = edPanelHtml();
+  el('printPanel').style.display = ED_STATE.print ? 'block' : 'none';
+  el('canvasPaper').classList.toggle('dim2d', ED_STATE.mode==='2d');
+}
+
+/* ================= 云渲染控制台 ================= */
+const RF_STATE = {tab:'scene', stage:0};
+function rfSceneList(){
+  return `<div class="rl-filters">
+      <select id="rfUse"><option value="all">全部用途</option><option>电商运营</option><option>宣传推广</option><option>销售促单</option><option>营销卖货</option><option>社媒运营</option></select>
+      <select id="rfInd"><option value="all">全部行业</option><option>食品饮料</option><option>美妆个护</option><option>生活日化</option><option>数码家电</option></select>
+      <select id="rfColor"><option value="all">全部颜色</option><option>白</option><option>绿</option><option>暖</option><option>橙</option><option>蓝</option><option>红</option><option>紫</option></select>
+    </div>
+    <div id="rfSceneGrid">${R_SCENES.map((s,i)=>`<div class="rl-item ${i===RF_STATE.stage?'on':''}" data-stage="${i}"><img src="${s.img}" alt="${s.name}"><div><div class="n">${s.name}</div><div class="s">${s.use} · ${s.ind}</div></div></div>`).join('')}</div>`;
+}
+function rfPanelHtml(){
+  const t = RF_STATE.tab;
+  if(t==='scene') return rfSceneList();
+  if(t==='mat') return R_MATS.map(g=>`
+      <div class="rl-cat"><b>${g.cat}</b><span>查看全部</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">${g.items.map(m=>`<div class="rl-item" data-demo="应用材质「${m}」（演示）" style="flex-direction:column;align-items:flex-start"><div style="width:100%;height:34px;border-radius:6px;background:${matColor(m)}"></div><div class="n">${m}</div></div>`).join('')}</div>`).join('');
+  if(t==='light') return `<div class="rl-cat"><b>灯光模板</b><span>查看全部</span></div>
+      ${R_LIGHTS.map(l=>`<div class="rl-item" data-demo="应用灯光「${l}」（演示）"><div style="width:52px;height:52px;border-radius:50%;flex:none;background:${lightColor(l)}"></div><div><div class="n">${l}</div></div></div>`).join('')}`;
+  if(t==='asset') return `<div class="rl-cat"><b>素材库</b><span>搜索</span></div>
+      ${BOXES.slice(0,8).map(b=>`<div class="rl-item" data-demo="加入素材「${b.name}」（演示）"><img src="${b.img}" alt="${b.name}"><div><div class="n">${b.name}</div><div class="s">包装模型</div></div></div>`).join('')}`;
+  return '';
+}
+function renderRender(){
+  el('rfPanel').innerHTML = rfPanelHtml();
+  const s = R_SCENES[RF_STATE.stage];
+  el('rfStage').src = s.img;
+  el('rfStageName').textContent = s.name;
+  bindRfFilters();
+}
+function matColor(m){
+  const map = {'瓦楞纸':'#C8B195','铜版纸哑光':'#F1EFEA','铜版纸光面':'#E8E4DA','镀银':'#C0C6CF','镀金':'#D4AF37','磨砂镀金':'#B89B5E','哑光白塑料':'#E6E9EC','油光白塑料':'#F5F6F8','哑光透明塑料':'#AFC4D6','哑光陶瓷':'#E9E4DC','油光陶瓷':'#D8CFC0','哑光玻璃':'#B9CFD8','胡桃木':'#6F4E37','原木':'#C8A26B','软木塞':'#B98D5B','帆布布料':'#D6CFC4','亚麻布':'#E3DAC8','灰咖皮质':'#7C5E44','水磨石':'#B9B4AC','爵士白大理石':'#EDEBE6','水泥':'#9A958E'};
+  return map[m]||'#9AA1AF';
+}
+function lightColor(l){
+  const map = {'自然暖阳光':'#FFE0B8','顶射聚焦':'#FFF3D6','冷暖光':'#FFD9C9','清冷光':'#DCE9F5','白天高光':'#FFFFFF','白天柔光':'#F2E9DD'};
+  return map[l]||'#E8E8E8';
+}
+function renderAlbum(){
+  const k = S.albumKind || 'img';
+  if(k==='video'){
+    el('albumGrid').innerHTML = ALBUM.map(a=>`<div class="album-card" data-demo="播放渲染视频（演示）"><img src="${a.img}" alt="${a.name}"><div class="a-body"><span>${a.name}</span><span style="color:#FFB27A">▶ 视频</span></div></div>`).join('') || emptyHtml('暂无渲染视频');
+    return;
+  }
+  el('albumGrid').innerHTML = ALBUM.map(a=>`<div class="album-card" data-demo="打开渲染效果图「${a.name}」（演示）"><img src="${a.img}" alt="${a.name}"><div class="a-body"><span>${a.name}</span><span style="color:var(--muted)">${a.date}</span></div></div>`).join('') || emptyHtml('暂无渲染内容，点击「立即渲染」出图');
+}
+
+/* ================= 工具视图事件 ================= */
+function bindToolEvents(){
+  // 菜单开关
+  function menuToggle(btn, menu){
+    btn.addEventListener('click', e=>{
+      e.stopPropagation();
+      document.querySelectorAll('.menu-drop.on').forEach(m=>m.classList.remove('on'));
+      menu.classList.toggle('on');
+    });
+  }
+  menuToggle(el('edFileBtn'), el('edFileMenu'));
+  menuToggle(el('edExportBtn'), el('edExportMenu'));
+  menuToggle(el('rfFileBtn'), el('rfFileMenu'));
+  document.addEventListener('click', ()=>document.querySelectorAll('.menu-drop.on').forEach(m=>m.classList.remove('on')));
+  // 2D / 3D 模式
+  el('edMode2d').addEventListener('click', ()=>{ED_STATE.mode='2d'; el('edMode2d').classList.add('on'); el('edMode3d').classList.remove('on'); el('canvasPaper').classList.add('dim2d')});
+  el('edMode3d').addEventListener('click', ()=>{ED_STATE.mode='3d'; el('edMode3d').classList.add('on'); el('edMode2d').classList.remove('on'); el('canvasPaper').classList.remove('dim2d')});
+  // 印品选择开关
+  el('edPrintBtn').addEventListener('click', ()=>{ED_STATE.print=!ED_STATE.print; el('printPanel').style.display=ED_STATE.print?'block':'none'; el('edPrintBtn').classList.toggle('on',ED_STATE.print)});
+  // 编辑器标签
+  el('edTabs').addEventListener('click', e=>{
+    const t = e.target.closest('.el-tab'); if(!t) return;
+    ED_STATE.tab = t.dataset.t;
+    el('edTabs').querySelectorAll('.el-tab').forEach(x=>x.classList.toggle('on', x===t));
+    el('edPanel').innerHTML = edPanelHtml();
+  });
+  // 尺寸联动
+  function calc(){
+    const L=+el('edInputL').value||0, W=+el('edInputW').value||0, H=+el('edInputH').value||0;
+    el('edL').textContent=L; el('edW').textContent=W; el('edH').textContent=H;
+    el('printArea').textContent = (L*W/1e6).toFixed(2)+'m²';
+    el('printPrice').textContent = '￥ ' + ((L*W/1e6)*8.5).toFixed(2);
+  }
+  ['edInputL','edInputW','edInputH'].forEach(id=>el(id).addEventListener('input', calc));
+  // 厚度
+  el('edThickRange').addEventListener('input', e=>el('edThick').textContent=e.target.value+'mm');
+  // 颜色 / 纹理
+  el('edColor').addEventListener('input', e=>el('canvasPaper').style.background=e.target.value);
+  el('edTexture').addEventListener('change', e=>{
+    el('canvasPaper').style.backgroundImage = e.target.value==='无' ? 'none' : `repeating-linear-gradient(45deg, rgba(0,0,0,.04) 0 2px, transparent 2px 6px)`;
+  });
+  // 开 / 合 开关
+  el('edOpen').addEventListener('click', ()=>{el('edOpen').classList.toggle('on')});
+  el('edClose').addEventListener('click', ()=>{el('edClose').classList.toggle('on')});
+  // 外侧 / 内侧
+  el('edSide').addEventListener('click', e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    el('edSide').querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  });
+  // 缩放
+  el('zoomIn').addEventListener('click', ()=>{ED_STATE.zoom=Math.min(150,ED_STATE.zoom+10); applyZoom()});
+  el('zoomOut').addEventListener('click', ()=>{ED_STATE.zoom=Math.max(50,ED_STATE.zoom-10); applyZoom()});
+  function applyZoom(){el('canvasPaper').style.transform=`scale(${ED_STATE.zoom/100})`; el('zoomVal').textContent=ED_STATE.zoom+'%'}
+  // 渲染台标签
+  el('rfTabs').addEventListener('click', e=>{
+    const t=e.target.closest('.rl-tab'); if(!t) return;
+    RF_STATE.tab=t.dataset.r;
+    el('rfTabs').querySelectorAll('.rl-tab').forEach(x=>x.classList.toggle('on', x===t));
+    el('rfPanel').innerHTML = rfPanelHtml();
+    bindRfFilters();
+  });
+  // 渲染台顶部标签联动
+  document.querySelectorAll('.rt-btn[data-r]').forEach(b=>b.addEventListener('click', ()=>{
+    RF_STATE.tab=b.dataset.r;
+    el('rfTabs').querySelectorAll('.rl-tab').forEach(x=>x.classList.toggle('on', x.dataset.r===b.dataset.r));
+    el('rfPanel').innerHTML = rfPanelHtml();
+    bindRfFilters();
+  }));
+  // 渲染台底部控件
+  el('rfLight').addEventListener('input', e=>el('rfLightVal').textContent=e.target.value+'%');
+  el('rfShadow').addEventListener('click', ()=>el('rfShadow').classList.toggle('on'));
+  el('rfTrans').addEventListener('click', ()=>el('rfTrans').classList.toggle('on'));
+  el('rfView').addEventListener('click', e=>{
+    const b=e.target.closest('.rtool'); if(!b) return;
+    el('rfView').querySelectorAll('.rtool').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  });
+  el('rfRenderGo').addEventListener('click', ()=>{
+    ALBUM.unshift({name:'新渲染效果图', img:el('rfStage').src.replace(/.*\//,''), date:'刚刚'});
+    toast('渲染任务已提交，约 10 秒出图（演示）');
+  });
+  // 渲染图册
+  el('albumSeg').addEventListener('click', e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    el('albumSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    S.albumKind=b.dataset.k; renderAlbum();
+  });
+}
+function bindRfFilters(){
+  const u=el('rfUse'), i=el('rfInd'), c=el('rfColor');
+  if(!u||!i||!c) return;
+  const grid=el('rfSceneGrid'); if(!grid) return;
+  function apply(){
+    let list=R_SCENES;
+    if(u.value!=='all') list=list.filter(s=>s.use===u.value);
+    if(i.value!=='all') list=list.filter(s=>s.ind===i.value);
+    if(c.value!=='all') list=list.filter(s=>s.color===c.value);
+    grid.innerHTML=list.map((s,idx)=>`<div class="rl-item" data-stage="${R_SCENES.indexOf(s)}"><img src="${s.img}" alt="${s.name}"><div><div class="n">${s.name}</div><div class="s">${s.use} · ${s.ind}</div></div></div>`).join('');
+  }
+  [u,i,c].forEach(x=>x.addEventListener('change', apply));
+  grid.addEventListener('click', e=>{
+    const it=e.target.closest('.rl-item[data-stage]'); if(!it) return;
+    RF_STATE.stage=+it.dataset.stage;
+    const s=R_SCENES[RF_STATE.stage];
+    el('rfStage').src=s.img; el('rfStageName').textContent=s.name;
+    grid.querySelectorAll('.rl-item').forEach(x=>x.classList.toggle('on', x===it));
+  });
+}
+
+/* ================= 启动 ================= */
+renderNav();
+bindEvents();
+bindToolEvents();
+el('modelsTotal').textContent = '共 ' + BOXES.length + ' 款盒型可选';
+window.addEventListener('hashchange', route);
+route();
+</script>
+
+</body>
+</html>
